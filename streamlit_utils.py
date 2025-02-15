@@ -27,32 +27,23 @@ def initialize_app():
 def initialize_session_variables():
     
     if "html" not in st.session_state:
-        st.session_state["html"] = {
-                                                "generated": False,
-                                                "finalised": False
-                                             }
+        st.session_state["html"] = False
 
     if "messages" not in st.session_state:
         st.session_state["messages"] = [
 
             {"role": "assistant", "content": "Hello! let's create a website together, Can you please let me know more about your business or the type of website you want to create?"}
         ]
-    if "display_messages" not in st.session_state:
-        st.session_state["display_messages"] = [
-            {"role": "assistant", "content": "Hello! let's create a website together, Can you please let me know more about your business or the type of website you want to create?"}
-        ]
 
-import time
+
+
 
 def display_previous_messages():
-    for msg in st.session_state.display_messages: 
+    for msg in st.session_state.messages: 
         if msg["role"] =='assistant':
             st.chat_message(msg["role"],avatar="🤖").write(msg["content"])
         else:
             st.chat_message(msg["role"],avatar="👤").write(msg["content"])
-
-
-
 
 
 
