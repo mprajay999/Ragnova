@@ -65,6 +65,8 @@ def create_code_prompt():
                     include import react statement;
                     give full code as it will the final code for deployment;
                     make sure all links work and functional;
+                    the website should be professional and minimalistic;
+                    when user clicks on the navbar, the transition should be smooth;
 
                 """
                 # +
