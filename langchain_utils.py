@@ -62,7 +62,7 @@ def create_code_prompt():
                     dont use complex dependencies, make sure the app will deploy in limited environment
                     include import react statement;
                     give full code as it will the final code for deployment;
-                    all links should work;
+                    make sure all links work and functional;
 
                 """
                 # +
