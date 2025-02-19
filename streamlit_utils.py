@@ -48,8 +48,8 @@ def display_previous_messages():
 
 
 def github_push(GITHUB_KEY,html):
-    repo_name = "mprajay999.github.io"
-    file_name = "index.html"
+    repo_name = "vitetailwind"
+    file_name = "src/App.jsx"
     commit_message = "Replaced index.html with new content"
 
     # Read the new file content and encode it to base64
