@@ -56,9 +56,9 @@ def websitegpt_app():
                     github_push(st.secrets["GITHUB_KEY"], html_content)
 
                     st.session_state["html"] = html_content
-                    time.sleep(40)
+                    time.sleep(20)
                     st.session_state.messages.append(
-                    {"role": "assistant", "content": "Your website is ready! Check it out [here](https://mprajay999.github.io/). Let me know if you need any changes or ask me to deploy it"}
+                    {"role": "assistant", "content": "Your website is ready! Check it out [here](https://vitetailwind.vercel.app/). Let me know if you need any changes or ask me to deploy it"}
                 )
 
 
