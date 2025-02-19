@@ -26,8 +26,10 @@ def create_design_prompt():
                 """
                     you are a part of ragnova team, your role is to give detailed instructions to the web developer to create a  website for a users business needs. 
                     give detailed instructions to the web developer to create a simple minimalistic aesthetic professional looking website for {user_input}, 
-                    the background should contain a nice aesthetic image; 
-                    dont give code snipets or tech requirements; only the plan for web developer; the user doesnt not give any input; dont keep any download links
+                    the background should contain a nice aesthetic image; dont talk about tech stack
+                    dont give code snipets or tech requirements; only the plan for web developer; 
+                    the user doesnt not give any input; dont keep any download links;
+                    the website should contain many sections in a single page layout;
 
                 """
       

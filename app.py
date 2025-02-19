@@ -12,7 +12,7 @@ llm_models = {
         "claude": ChatAnthropic(model="claude-3-5-sonnet-20241022", anthropic_api_key=st.secrets["ANTHROPIC_API_KEY"],max_tokens=8192),
         "deepseek": ChatOpenAI(model="deepseek-reasoner", api_key=st.secrets["DEEPSEEK_API_KEY"], base_url="https://api.deepseek.com/v1"),
         "qwen": ChatOpenAI(model="qwen-max", api_key=st.secrets["QWEN_API_KEY"], base_url="https://dashscope-intl.aliyuncs.com/compatible-mode/v1"),
-        "openai": ChatOpenAI(model="o3-mini-2025-01-31", api_key=st.secrets["OPENAI_API_KEY"])
+        "openai": ChatOpenAI(model="chatgpt-4o-latest", api_key=st.secrets["OPENAI_API_KEY"])
 }
 
 
@@ -45,7 +45,7 @@ def websitegpt_app():
                     code_prompt = create_code_prompt()
                     
                     # Create chains
-                    design_chain = create_design_chain(llm_models["claude"], design_prompt)
+                    design_chain = create_design_chain(llm_models["openai"], design_prompt)
                     code_chain = create_code_chain(llm_models["claude"], code_prompt)
                     full_chain = create_full_chain(design_chain, code_chain)
                     result = full_chain.invoke(user_input)
