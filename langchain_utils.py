@@ -91,7 +91,7 @@ def create_test_prompt():
 
             3. **Ensure Completeness:**  
                - Confirm all navbar sections are implemented.  
-               - Populate sections with placeholder or real content as needed.
+               - Populate sections like footer with placeholder or real content as needed.
                - The website should not look incomplete  
 
             **Output:**  
