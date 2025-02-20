@@ -8,11 +8,11 @@ import time
 from images import *
 
 llm_models = {
-        "gemini": GoogleGenerativeAI(model="gemini-1.5-pro", google_api_key=st.secrets["GOOGLE_API_KEY"]),
+        "gemini": GoogleGenerativeAI(model="gemini-2.0-flash-thinking-exp-01-21", google_api_key=st.secrets["GOOGLE_API_KEY"]),
         "claude": ChatAnthropic(model="claude-3-5-sonnet-20241022", anthropic_api_key=st.secrets["ANTHROPIC_API_KEY"],max_tokens=8192),
-        "deepseek": ChatOpenAI(model="deepseek-reasoner", api_key=st.secrets["DEEPSEEK_API_KEY"], base_url="https://api.deepseek.com/v1"),
+        "deepseek": ChatOpenAI(model="deepseek-chat", api_key=st.secrets["DEEPSEEK_API_KEY"], base_url="https://api.deepseek.com/v1"),
         "qwen": ChatOpenAI(model="qwen-max", api_key=st.secrets["QWEN_API_KEY"], base_url="https://dashscope-intl.aliyuncs.com/compatible-mode/v1"),
-        "openai": ChatOpenAI(model="chatgpt-4o-latest", api_key=st.secrets["OPENAI_API_KEY"])
+        "openai": ChatOpenAI(model="o1-mini", api_key=st.secrets["OPENAI_API_KEY"])
 }
 
 
@@ -43,11 +43,14 @@ def websitegpt_app():
                     
                     design_prompt = create_design_prompt()
                     code_prompt = create_code_prompt()
+                    test_prompt = create_test_prompt()
                     
                     # Create chains
                     design_chain = create_design_chain(llm_models["openai"], design_prompt)
                     code_chain = create_code_chain(llm_models["claude"], code_prompt)
-                    full_chain = create_full_chain(design_chain, code_chain)
+                    test_chain = create_test_chain(llm_models["openai"],test_prompt)
+                    full_chain = create_full_chain(design_chain, code_chain,test_chain)
+
                     result = full_chain.invoke(user_input)
     
                     # Process and push
