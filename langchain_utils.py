@@ -14,9 +14,10 @@ def create_design_prompt():
             - Make sure the navbar looks good
             - Do NOT discuss the tech stack.
             - Do NOT provide code snippets or technical requirements—only a plan for the web developer.
-            - The user has not provided specific inputs.
             - Do NOT include any download links.
             - The website should feature multiple sections in a single-page layout.
+            - Focus more on the UI part of the website.
+            - Keep output minimal so that the developer can easily follow it
         """
     )
 
