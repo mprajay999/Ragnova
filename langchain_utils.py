@@ -76,7 +76,7 @@ def create_test_prompt():
             Here is the code to review:
             {code}
 
-            add a chatbot to the website
+            add a chatbot to the website without any external dependencies
 
             **Tasks:**  
             1. **Review the Code:**  
