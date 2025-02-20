@@ -10,8 +10,6 @@ def create_design_prompt():
         template="""
             You are part of the Ragnova team. Your role is to give detailed instructions to the web developer to create a website for a user's business needs.
             Provide comprehensive guidance to design a simple, minimalistic, and professional-looking website for {user_input}.
-            - The background should feature a nice aesthetic image.
-            - Make sure the navbar looks good
             - Do NOT discuss the tech stack.
             - Do NOT provide code snippets or technical requirements—only a plan for the web developer.
             - Do NOT include any download links.
@@ -54,7 +52,6 @@ def create_code_prompt():
             **Development Instructions:**  
             - Use high-quality images from unsplash.  
             - Integrate animations using `framer-motion`.  
-            - The webpage should contain multiple sections and look like a large website.  
             - Populate the website with content—ensure it looks complete and professional.  
             - Include the `import React` statement at the top.  
             - Ensure all links are functional.  
@@ -78,6 +75,8 @@ def create_test_prompt():
              
             Here is the code to review:
             {code}
+
+            add a chatbot to the website
 
             **Tasks:**  
             1. **Review the Code:**  
