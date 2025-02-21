@@ -51,6 +51,7 @@ def create_code_prompt():
 
             **Development Instructions:**  
             - Use high-quality images from unsplash.  
+            - The Navbar and brand placement should be unique and 
             - Integrate animations using `framer-motion`.  
             - Populate the website with content—ensure it looks complete and professional.  
             - Include the `import React` statement at the top.  
