@@ -324,3 +324,120 @@ function updateDeploymentUrl(message) {
         }
     }
 }
+
+
+
+
+
+
+// Function to replace the default thinking indicator with our custom animation
+function enhanceThinkingAnimation() {
+    // Find all thinking indicators that might be added dynamically
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.addedNodes) {
+                mutation.addedNodes.forEach((node) => {
+                    // Check if the added node contains a thinking indicator
+                    if (node.classList && node.classList.contains('thinking')) {
+                        replaceWithCustomAnimation(node);
+                    } else if (node.querySelectorAll) {
+                        const thinkingNodes = node.querySelectorAll('.thinking');
+                        thinkingNodes.forEach(replaceWithCustomAnimation);
+                    }
+                });
+            }
+        });
+    });
+
+    // Start observing the chat container
+    observer.observe(document.getElementById('chat-messages'), {
+        childList: true,
+        subtree: true
+    });
+    
+    // Also check for any existing thinking indicators
+    document.querySelectorAll('.thinking').forEach(replaceWithCustomAnimation);
+}
+
+// Replace the thinking indicator with our custom animation
+function replaceWithCustomAnimation(thinkingNode) {
+    // If already enhanced, don't do it again
+    if (thinkingNode.dataset.enhanced) return;
+    
+    // Mark as enhanced
+    thinkingNode.dataset.enhanced = 'true';
+    
+    // Clear the existing content
+    thinkingNode.innerHTML = '';
+    
+    // Add our custom animation
+    const processingDiv = document.createElement('div');
+    processingDiv.className = 'brain-processing';
+    
+    // Add the animated dots
+    for (let i = 0; i < 4; i++) {
+        const dot = document.createElement('div');
+        processingDiv.appendChild(dot);
+    }
+    
+    // Add the "Processing..." text
+    const texts = [
+        "Analyzing your request...",
+        "Creating magic...",
+        "Building something awesome...",
+        "Connecting neural pathways...",
+        "Crafting a response...",
+        "Exploring possibilities...",
+        "Processing at light speed..."
+    ];
+    
+    const textSpan = document.createElement('span');
+    textSpan.className = 'thinking-text';
+    
+    // Initial text
+    textSpan.textContent = texts[0];
+    
+    // Cycle through texts from top to bottom
+    let currentIndex = 0;
+    const messageInterval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % texts.length;
+        textSpan.textContent = texts[currentIndex];
+    }, 2000); // Change message every 2 seconds
+    
+    // Store the interval ID in the node's dataset so we can clear it later
+    thinkingNode.dataset.intervalId = messageInterval;
+    
+    // Clear interval when the thinking indicator is removed
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.removedNodes) {
+                mutation.removedNodes.forEach((node) => {
+                    if (node === thinkingNode || node.contains(thinkingNode)) {
+                        clearInterval(messageInterval);
+                        observer.disconnect();
+                    }
+                });
+            }
+        });
+    });
+    
+    // Start observing the parent
+    if (thinkingNode.parentNode) {
+        observer.observe(thinkingNode.parentNode, {
+            childList: true,
+            subtree: true
+        });
+    }
+    
+    // Append elements to the thinking container
+    thinkingNode.appendChild(processingDiv);
+    thinkingNode.appendChild(textSpan);
+}
+
+// Call this function when the page loads
+document.addEventListener('DOMContentLoaded', enhanceThinkingAnimation);
+
+// In case the page is already loaded
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    enhanceThinkingAnimation();
+}
