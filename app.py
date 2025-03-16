@@ -10,7 +10,10 @@ if os.path.exists(WEBSITE_DIR):
     shutil.rmtree(WEBSITE_DIR)
     print(f"Deleted existing website directory: {WEBSITE_DIR}")
 
-# Constants
+# Store conversation histories by session ID
+conversation_store = {}
+
+# Constants (unchanged)
 DEFAULT_INDEX_HTML = """
 <!DOCTYPE html>
 <html>
@@ -51,7 +54,7 @@ DEFAULT_INDEX_HTML = """
 </html>
 """
 
-# Auto-refresh script to inject into HTML files
+# Auto-refresh script (unchanged)
 AUTO_REFRESH_SCRIPT = """
 <script>
 // Store the last modified time
@@ -73,7 +76,7 @@ setInterval(function() {
 </script>
 """
 
-# MIME type mapping for file extensions
+# MIME type mapping (unchanged)
 MIME_TYPES = {
     '.html': 'text/html',
     '.css': 'text/css',
@@ -104,10 +107,40 @@ def chat():
     """Handle chat requests from the frontend"""
     try:
         data = request.json
-        message = data.get('message', '')
+        user_message = data.get('message', '')
+        session_id = data.get('session_id', request.remote_addr)  # Use client IP as fallback
+        
+        # Get or initialize conversation history for this session
+        if session_id not in conversation_store:
+            conversation_store[session_id] = []
+        
+        conversation_history = conversation_store[session_id]
+        
+        # Append the new user message to history
+        conversation_history.append({'role': 'user', 'content': user_message})
+        
+        # Create a message that includes the conversation history
+        if len(conversation_history) > 1:
+            context_message = "Here's our conversation so far:\n\n"
+            for msg in conversation_history[:-1]:  # All except the current message
+                role = "User" if msg['role'] == 'user' else "Assistant"
+                context_message += f"{role}: {msg['content']}\n\n"
+            
+            context_message += f"Now responding to: {user_message}"
+            enhanced_message = context_message
+        else:
+            enhanced_message = user_message
         
         # Process the message through the assistant
-        response = assistant.chat(message)
+        response = assistant.chat(enhanced_message)
+        
+        # Store the assistant's response
+        conversation_history.append({'role': 'assistant', 'content': response})
+        
+        # Prune history if it gets too large
+        if len(conversation_history) > 20:  # Arbitrary limit, adjust as needed
+            conversation_history = conversation_history[-10:]  # Keep last 10 exchanges
+            conversation_store[session_id] = conversation_history
         
         # Get token usage statistics
         token_usage = {
@@ -156,7 +189,15 @@ def get_last_used_tool(assistant_instance):
 @app.route('/reset', methods=['POST'])
 def reset():
     """Reset the assistant's conversation history"""
+    session_id = request.json.get('session_id', request.remote_addr)
+    
+    # Clear the conversation history for this session
+    if session_id in conversation_store:
+        conversation_store[session_id] = []
+    
+    # Reset the assistant as well
     assistant.reset()
+    
     return jsonify({'status': 'success'})
 
 @app.route('/check-website-modified', methods=['GET'])
