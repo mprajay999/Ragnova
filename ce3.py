@@ -22,7 +22,7 @@ from prompts.system_prompts import SystemPrompts
 
 # Configure logging to only show ERROR level and above
 logging.basicConfig(
-    level=logging.ERROR,
+    level=logging.INFO,
     format='%(levelname)s: %(message)s'
 )
 
@@ -386,15 +386,17 @@ class Assistant:
 
             # Final assistant response
             if (getattr(response, 'content', None) and 
-                isinstance(response.content, list) and 
-                len(response.content) > 0):
+                isinstance(response.content, list)):
                 
-                # Check if the content block has a text attribute
-                if hasattr(response.content[0], 'text'):
-                    final_content = response.content[0].text
-                else:
-                    # Try to extract text or provide a fallback
-                    final_content = getattr(response.content[0], 'text', str(response.content[0]))
+                # Extract all text content from the response
+                final_content = ""
+                for content_block in response.content:
+                    if content_block.type == "text":
+                        final_content += content_block.text
+                
+                # If no text content was found, provide a fallback
+                if not final_content:
+                    final_content = "No text content available in response."
                 
                 self.conversation_history.append({
                     "role": "assistant",
